@@ -1,0 +1,12 @@
+{
+  "name": "hyn/laravel-scout-sphinx",
+  "require": {
+    "laravel/scout": "^1.1",
+    "foolz/sphinxql-query-builder": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hyn\\SphinxScout\\": "src/"
+    }
+  }
+}
