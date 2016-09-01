@@ -118,7 +118,7 @@ class Engine extends AbstractEngine
         $index = $example->searchableAs();
         $columns = array_keys($example->toSearchableArray());
 
-        return SphinxQL::create($this->connections->first())
+        return SphinxQL::create($this->connections->random())
             ->from($index)
             ->match($columns, $builder->query)
             ->execute();
