@@ -135,7 +135,15 @@ class Engine extends AbstractEngine
      */
     public function paginate(Builder $builder, $perPage, $page)
     {
-        // TODO: Implement paginate() method.
+        $example = $builder->model;
+        $index = $example->searchableAs();
+        $columns = array_keys($example->toSearchableArray());
+
+        return SphinxQL::create($this->connections->random())
+            ->from($index)
+            ->match($columns, $builder->query)
+            ->limit($perPage * ($page - 1), $perPage)
+            ->execute();
     }
 
     /**
