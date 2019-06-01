@@ -1,6 +1,6 @@
 # Laravel Scout Sphinx Driver
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 ## Introduction
 This package offers advanced functionality for searching and filtering data using [Sphinx search engine](http://sphinxsearch.com/) for Laravel Scout.
