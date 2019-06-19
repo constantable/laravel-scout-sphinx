@@ -1,6 +1,6 @@
 <?php
 
-namespace Hyn\SphinxScout;
+namespace Constantable\SphinxScout;
 
 use Illuminate\Support\ServiceProvider as Provider;
 use Laravel\Scout\EngineManager;

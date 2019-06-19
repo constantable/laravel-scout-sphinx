@@ -1,12 +1,21 @@
 {
-  "name": "hyn/laravel-scout-sphinx",
+  "name": "constantable/laravel-scout-sphinx",
+  "description": "Laravel Scout Sphinx Driver",
+  "minimum-stability": "dev",
   "require": {
     "laravel/scout": "^1.1",
     "foolz/sphinxql-query-builder": "^1.1"
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "constantable\\laravel-scout-sphinx\\ServiceProvider"
+      ]
+    }
+  },
   "autoload": {
     "psr-4": {
-      "Hyn\\SphinxScout\\": "src/"
+      "Constantable\\SphinxScout\\": "src/"
     }
   }
 }
