@@ -10,7 +10,7 @@ class ServiceProvider extends Provider
     public function boot()
     {
         resolve(EngineManager::class)->extend('sphinxsearch', function ($app) {
-            return new Engine();
+            return new SphinxEngine(config('scout.sphinxsearch'));
         });
     }
 }
