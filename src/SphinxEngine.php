@@ -196,7 +196,7 @@ class SphinxEngine extends AbstractEngine
         }
 
         if ($builder->callback) {
-            return call_user_func(
+            call_user_func(
                 $builder->callback,
                 $query
             );
