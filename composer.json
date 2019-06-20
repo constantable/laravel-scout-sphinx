@@ -11,7 +11,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "constantable\\laravel-scout-sphinx\\ServiceProvider"
+        "Constantable\\SphinxScout\\ServiceProvider"
       ]
     }
   },
