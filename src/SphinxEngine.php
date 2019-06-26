@@ -2,7 +2,6 @@
 
 namespace Constantable\SphinxScout;
 
-use Foolz\SphinxQL\Drivers\Pdo\Connection;
 use Foolz\SphinxQL\Helper;
 use Foolz\SphinxQL\SphinxQL;
 use Illuminate\Database\Eloquent\Model;
@@ -15,22 +14,19 @@ class SphinxEngine extends AbstractEngine
 {
 
     /**
-     * @var Connection
+     * @var SphinxQL
      */
-    protected $connection;
+    protected $sphinx;
 
-    public function __construct(array $options = [])
+    public function __construct($sphinx)
     {
-        if (empty($options['socket']))
-            unset($options['socket']);
-        $this->connection = new Connection();
-        $this->connection->setParams($options);
+        $this->sphinx = $sphinx;
     }
 
     /**
      * Update the given model in the index.
      *
-     * @param \Illuminate\Database\Eloquent\Collection $models     *
+     * @param \Illuminate\Database\Eloquent\Collection $models *
      * @return void
      */
     public function update($models)
@@ -42,7 +38,7 @@ class SphinxEngine extends AbstractEngine
             if (isset($model->isRT)) { // Only RT indexes support replace
                 $index = $model->searchableAs();
                 $columns = array_keys($model->toSearchableArray());
-                $sphinxQuery = (new SphinxQL($this->connection))
+                $sphinxQuery = $this->sphinx
                     ->replace()
                     ->into($index)
                     ->columns($columns);
@@ -55,7 +51,7 @@ class SphinxEngine extends AbstractEngine
     /**
      * Remove the given model from the index.
      *
-     * @param \Illuminate\Database\Eloquent\Collection $models     *
+     * @param \Illuminate\Database\Eloquent\Collection $models *
      * @return void
      */
     public function delete($models)
@@ -67,7 +63,7 @@ class SphinxEngine extends AbstractEngine
             if (isset($model->isRT)) { // Only RT indexes support deletes
                 $index = $model->searchableAs();
                 $key = $model->getKey();
-                (new SphinxQL($this->connection))
+                $this->sphinx
                     ->delete()
                     ->from($index)
                     ->where('id', 'IN', $key);
@@ -147,7 +143,7 @@ class SphinxEngine extends AbstractEngine
      */
     public function getTotalCount($results)
     {
-        $res = (new Helper($this->connection))->showMeta()->execute();
+        $res = (new Helper($this->sphinx->getConnection()))->showMeta()->execute();
         $assoc = $res->fetchAllAssoc();
         $totalCount = $results->count();
         foreach ($assoc as $item => $value) {
@@ -186,7 +182,7 @@ class SphinxEngine extends AbstractEngine
         $index = $model->searchableAs();
         $columns = array_keys($model->toSearchableArray());
 
-        $query = (new SphinxQL($this->connection))
+        $query = $this->sphinx
             ->select('*')
             ->from($index)
             ->match($columns, SphinxQL::expr('"' . $builder->query . '"/1'));
