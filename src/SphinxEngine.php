@@ -26,7 +26,7 @@ class SphinxEngine extends AbstractEngine
     /**
      * Update the given model in the index.
      *
-     * @param \Illuminate\Database\Eloquent\Collection $models *
+     * @param \Illuminate\Database\Eloquent\Collection $models
      * @return void
      */
     public function update($models)
@@ -35,15 +35,18 @@ class SphinxEngine extends AbstractEngine
             return;
         }
         $models->each(function ($model) {
-            if (isset($model->isRT)) { // Only RT indexes support replace
-                $index = $model->searchableAs();
-                $columns = array_keys($model->toSearchableArray());
-                $sphinxQuery = $this->sphinx
-                    ->replace()
-                    ->into($index)
-                    ->columns($columns);
-                $sphinxQuery->values($model->toSearchableArray());
-                $sphinxQuery->execute();
+            if (!empty($searchableData = $model->toSearchableArray())) {
+                if (isset($model->isRT)) { // Only RT indexes support replace
+                    $index = $model->searchableAs();
+                    $columns = array_keys($searchableData);
+
+                    $sphinxQuery = $this->sphinx
+                        ->replace()
+                        ->into($index)
+                        ->columns($columns)
+                        ->values($searchableData);
+                    $sphinxQuery->execute();
+                }
             }
         });
     }
@@ -63,10 +66,11 @@ class SphinxEngine extends AbstractEngine
             if (isset($model->isRT)) { // Only RT indexes support deletes
                 $index = $model->searchableAs();
                 $key = $model->getKey();
-                $this->sphinx
+                $sphinxQuery = $this->sphinx
                     ->delete()
                     ->from($index)
                     ->where('id', 'IN', $key);
+                $sphinxQuery->execute();
             }
         });
     }
