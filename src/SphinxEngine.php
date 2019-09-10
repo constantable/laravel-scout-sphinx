@@ -18,6 +18,11 @@ class SphinxEngine extends AbstractEngine
      */
     protected $sphinx;
 
+    /**
+     * @var array
+     */
+    protected $whereIns = [];
+
     public function __construct($sphinx)
     {
         $this->sphinx = $sphinx;
@@ -192,7 +197,11 @@ class SphinxEngine extends AbstractEngine
             ->match($columns, SphinxQL::expr('"' . $builder->query . '"/1'));
 
         foreach ($builder->wheres as $clause => $filters) {
-            $query->where($clause, 'IN', $filters);
+            $query->where($clause, '=', $filters);
+        }
+
+        foreach ($this->whereIns as $whereIn) {
+            $query->where(key($whereIn), 'IN', $whereIn[key($whereIn)]);
         }
 
         if ($builder->callback) {
@@ -207,5 +216,14 @@ class SphinxEngine extends AbstractEngine
         }
 
         return $query;
+    }
+
+    /**
+     * @param string $attribute
+     * @param array $arrayIn
+     */
+    public function addWhereIn(string $attribute, array $arrayIn)
+    {
+        $this->whereIns[] = array($attribute => $arrayIn);
     }
 }
