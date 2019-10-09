@@ -43,6 +43,7 @@ class SphinxEngine extends AbstractEngine
             if (!empty($searchableData = $model->toSearchableArray())) {
                 if (isset($model->isRT)) { // Only RT indexes support replace
                     $index = $model->searchableAs();
+                    $searchableData['id'] = (int)$model->getKey();
                     $columns = array_keys($searchableData);
 
                     $sphinxQuery = $this->sphinx
