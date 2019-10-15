@@ -75,7 +75,7 @@ class SphinxEngine extends AbstractEngine
                 $sphinxQuery = $this->sphinx
                     ->delete()
                     ->from($index)
-                    ->where('id', 'IN', $key);
+                    ->where('id', 'IN', [$key]);
                 $sphinxQuery->execute();
             }
         });
