@@ -70,7 +70,7 @@ class SphinxEngineTest extends MockeryTestCase
             ->andReturn($thisObject = m::mock(SphinxQL::class));
 
         $thisObject->shouldReceive('where')->once()
-            ->with('id', 'IN', $this->model->getKey())
+            ->with('id', '=', $this->model->getKey())
             ->andReturn($thisObject = m::mock(SphinxQL::class));
 
         $thisObject->shouldReceive('execute')->once();
