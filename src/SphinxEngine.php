@@ -193,12 +193,11 @@ class SphinxEngine extends AbstractEngine
          */
         $model = $builder->model;
         $index = $model->searchableAs();
-        $columns = array_keys($model->toSearchableArray());
 
         $query = $this->sphinx
-            ->select('*')
+            ->select('*', SphinxQL::expr('WEIGHT() AS weight'))
             ->from($index)
-            ->match($columns, SphinxQL::expr('"' . $builder->query . '"/1'));
+            ->match('*', SphinxQL::expr('"' . $builder->query . '"/1'));
 
         foreach ($builder->wheres as $clause => $filters) {
             $query->where($clause, '=', $filters);
@@ -215,8 +214,12 @@ class SphinxEngine extends AbstractEngine
             );
         }
 
-        foreach ($builder->orders as $order) {
-            $query->orderBy($order['column'], $order['direction']);
+        if (empty($builder->orders)) {
+            $query->orderBy('weight', 'DESC');
+        } else {
+            foreach ($builder->orders as $order) {
+                $query->orderBy($order['column'], $order['direction']);
+            }
         }
 
         return $query;
