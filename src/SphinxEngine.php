@@ -174,7 +174,7 @@ class SphinxEngine extends AbstractEngine
      */
     public function flush($model)
     {
-        if (isset($model->isRT)) { // Only RT indices support truncate
+        if (isset($model->isRT)) { // Only RT indexes support truncate
             $index = $model->searchableAs();
             $res = (new Helper($this->sphinx->getConnection()))->truncateRtIndex($index)->execute();
         }
