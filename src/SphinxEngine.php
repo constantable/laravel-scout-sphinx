@@ -161,8 +161,7 @@ class SphinxEngine extends AbstractEngine
                 $totalCount = $value["Value"];
             }
         }
-        if ($totalCount >= 1000)
-            $totalCount = 999;
+        
         return $totalCount;
     }
 
