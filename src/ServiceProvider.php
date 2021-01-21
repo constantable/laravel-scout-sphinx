@@ -3,7 +3,7 @@ namespace Constantable\SphinxScout;
 
 use Foolz\SphinxQL\Drivers\Pdo\Connection;
 use Foolz\SphinxQL\SphinxQL;
-use Illuminate\Container\Container;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider as Provider;
 use Laravel\Scout\EngineManager;
@@ -12,7 +12,7 @@ use Laravel\Scout\Builder;
 class ServiceProvider extends Provider{
 
     public function boot(){
-    	Container::getInstance()->make(EngineManager::class)->extend('sphinxsearch',static function($app){
+    	App::make(EngineManager::class)->extend('sphinxsearch',static function($app){
             $options = Config::get('scout.sphinxsearch');
             if (empty($options['socket']))
                 unset($options['socket']);
