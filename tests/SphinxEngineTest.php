@@ -1,6 +1,5 @@
 <?php
-
-namespace Tests\Unit;
+namespace Constantable\SphinxScout\Tests;
 
 use Constantable\SphinxScout\SphinxEngine;
 use Constantable\SphinxScout\Tests\model\SearchableModel;
@@ -17,8 +16,8 @@ use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use stdClass;
 
-class SphinxEngineTest extends MockeryTestCase
-{
+class SphinxEngineTest extends MockeryTestCase{
+
     /**
      * @var Model|Searchable
      */
@@ -169,13 +168,5 @@ class SphinxEngineTest extends MockeryTestCase
         $engine = new SphinxEngine($client);
         $engine->update(Collection::make([new EmptySearchableModel]));
         $this->assertTrue(true);
-    }
-}
-
-class EmptySearchableModel extends SearchableModel
-{
-    public function toSearchableArray()
-    {
-        return [];
     }
 }
