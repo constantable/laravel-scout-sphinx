@@ -16,13 +16,11 @@ class SearchableModel extends Model{
 
     public $isRT = true;
 
-    public function searchableAs()
-    {
+    public function searchableAs(): string{
         return 'table';
     }
 
-    public function scoutMetadata()
-    {
+    public function scoutMetadata(): array{
         return [];
     }
 

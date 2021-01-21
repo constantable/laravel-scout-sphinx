@@ -5,7 +5,7 @@ use Constantable\SphinxScout\Tests\model\SearchableModel;
 
 class EmptySearchableModel extends SearchableModel{
 
-	public function toSearchableArray(){
+	public function toSearchableArray(): array{
 		return [];
 	}
 

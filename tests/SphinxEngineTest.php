@@ -14,6 +14,7 @@ use Laravel\Scout\Searchable;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\MockInterface;
 use stdClass;
 
 class SphinxEngineTest extends MockeryTestCase{
@@ -80,7 +81,7 @@ class SphinxEngineTest extends MockeryTestCase{
 
     public function test_search_sends_correct_parameters_to_sphinx()
     {
-        $qry = "search query";
+        $qry = 'search query';
         $client = m::mock(SphinxQL::class);
         $client->shouldReceive('select')->once()->with('*')
             ->andReturn($thisObject = m::mock(SphinxQL::class));
@@ -91,8 +92,8 @@ class SphinxEngineTest extends MockeryTestCase{
 
         $expression = SphinxQL::expr('"' . $qry . '"/1');
         $thisObject->shouldReceive('match')->once()
-            ->with(array_keys($this->model->toSearchableArray()), m::on(function ($arg) use ($expression) {
-                return $expression == $arg;
+            ->with(array_keys($this->model->toSearchableArray()), m::on(static function ($arg) use ($expression) {
+                return $expression === $arg;
             }))
             ->andReturn($thisObject = m::mock(SphinxQL::class));
 
@@ -112,6 +113,7 @@ class SphinxEngineTest extends MockeryTestCase{
     {
         $client = m::mock(SphinxQL::class);
         $engine = new SphinxEngine($client);
+		/**@var Model|MockInterface $model*/
         $model = m::mock(stdClass::class);
         $model->shouldReceive('getScoutModelsByIds')->once()->andReturn($models = Collection::make([
             $this->model
@@ -123,13 +125,14 @@ class SphinxEngineTest extends MockeryTestCase{
         ]);
         $resultSet->shouldReceive('count')->andReturn($count = 1);
         $results = $engine->map($builder, $resultSet, $model);
-        $this->assertEquals(1, count($results));
+        $this->assertCount(1, $results);
     }
 
     public function test_map_method_respects_order()
     {
         $client = m::mock(SphinxQL::class);
         $engine = new SphinxEngine($client);
+		/**@var Model|MockInterface $model*/
         $model = m::mock(stdClass::class);
         $model->shouldReceive('getScoutModelsByIds')->andReturn($models = Collection::make([
             new SearchableModel(['id' => 1, 'title' => 'Some text']),
@@ -149,7 +152,7 @@ class SphinxEngineTest extends MockeryTestCase{
         ]);
         $resultSet->shouldReceive('count')->andReturn($count = 4);
         $results = $engine->map($builder, $resultSet, $model);
-        $this->assertEquals(4, count($results));
+        $this->assertCount(4, $results);
         // It's important we assert with array keys to ensure
         // they have been reset after sorting.
         $this->assertEquals([
