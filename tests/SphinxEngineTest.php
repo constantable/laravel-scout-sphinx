@@ -2,7 +2,7 @@
 namespace Constantable\SphinxScout\Tests;
 
 use Constantable\SphinxScout\SphinxEngine;
-use Constantable\SphinxScout\Tests\model\SearchableModel;
+use Constantable\SphinxScout\Tests\Model\SearchableModel;
 
 use Foolz\SphinxQL\Drivers\ResultSet;
 use Foolz\SphinxQL\SphinxQL;
@@ -24,19 +24,17 @@ class SphinxEngineTest extends MockeryTestCase{
      */
     private $model;
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
+    protected function tearDown(): void{
+		parent::tearDown();
+		m::close();
+	}
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->model = new SearchableModel(['id' => 1, 'title' => 'Some text']);
-    }
+	protected function setUp(): void{
+		parent::setUp();
+		$this->model = new SearchableModel(['id' => 1, 'title' => 'Some text']);
+	}
 
-    public function test_update_adds_objects_to_index()
+	public function test_update_adds_objects_to_index()
     {
         $client = m::mock(SphinxQL::class);
 
