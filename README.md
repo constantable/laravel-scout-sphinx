@@ -1,4 +1,5 @@
 # Laravel Scout Sphinx Driver
+# This is used in Platform Manager
 
 [![Build Status](https://travis-ci.org/constantable/laravel-scout-sphinx.svg?branch=master)](https://travis-ci.org/constantable/laravel-scout-sphinx)
 [![Latest Version on Packagist][ico-version]][link-packagist]
