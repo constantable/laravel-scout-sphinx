@@ -1,31 +1,26 @@
 <?php
-
-namespace Constantable\SphinxScout\Tests\model;
+namespace Constantable\SphinxScout\Tests\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-class SearchableModel extends Model
-{
-    use Searchable;
+class SearchableModel extends Model{
 
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = ['id', 'title'];
 
     public $isRT = true;
 
-    public function searchableAs()
-    {
+    public function searchableAs(): string{
         return 'table';
     }
 
-    public function scoutMetadata()
-    {
+    public function scoutMetadata(): array{
         return [];
     }
 
