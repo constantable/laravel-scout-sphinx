@@ -3,21 +3,15 @@
     "description": "Laravel Scout Sphinx Driver",
     "license": "MIT",
     "minimum-stability": "dev",
-    "repositories":[
-        {
-            "type": "git",
-            "url": "https://github.com/ben221199/SphinxQL-Query-Builder.git"
-        }
-    ],
     "require": {
-        "php": ">=7.0",
-        "laravel/scout": "^5.0|^6.0|^7.0|^8.0",
-        "foolz/sphinxql-query-builder": "dev-master"
+      "php": ">=7.0",
+      "laravel/scout": "^5.0|^6.0|^7.0|^8.0|^9.0",
+      "foolz/sphinxql-query-builder": "^3.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^7.5|^8|^9"
+      "roave/security-advisories": "dev-latest",
+      "mockery/mockery": "^1.0",
+      "phpunit/phpunit": "^7.5|^8|^9"
     },
     "extra": {
         "laravel": {
