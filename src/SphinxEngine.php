@@ -130,7 +130,7 @@ class SphinxEngine extends AbstractEngine
         return $model->getScoutModelsByIds(
             $builder, $objectIds
         )->filter(static function (/** @var Searchable $model */ $model) use ($objectIds) {
-            return in_array($model->getScoutKey(), $objectIds, true);
+            return in_array($model->getScoutKey(), $objectIds, false);
         })->sortBy(static function (/** @var Searchable $model */ $model) use ($objectIdPositions) {
             return $objectIdPositions[$model->getScoutKey()];
         })->values();
@@ -157,7 +157,7 @@ class SphinxEngine extends AbstractEngine
         return $model->queryScoutModelsByIds(
             $builder, $objectIds
         )->cursor()->filter(function (/** @var Searchable $model */ $model) use ($objectIds) {
-            return in_array($model->getScoutKey(), $objectIds, true);
+            return in_array($model->getScoutKey(), $objectIds, false);
         })->sortBy(function (/** @var Searchable $model */ $model) use ($objectIdPositions) {
             return $objectIdPositions[$model->getScoutKey()];
         })->values();
