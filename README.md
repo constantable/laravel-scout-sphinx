@@ -1,6 +1,6 @@
 # Laravel Scout Sphinx Driver
 
-[![Build Status](https://travis-ci.org/constantable/laravel-scout-sphinx.svg?branch=master)](https://travis-ci.org/constantable/laravel-scout-sphinx)
+[![Build Status](https://app.travis-ci.com/constantable/laravel-scout-sphinx.svg?branch=master)](https://app.travis-ci.com/constantable/laravel-scout-sphinx)
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
 
