@@ -1,12 +1,14 @@
 <?php
+
 namespace Constantable\SphinxScout\Tests\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-class SearchableModel extends Model{
+class SearchableModel extends Model
+{
 
-    use Searchable;
+//    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,16 +18,29 @@ class SearchableModel extends Model{
 
     public $isRT = true;
 
-    public function searchableAs(): string{
+    public function searchableAs(): string
+    {
         return 'table';
     }
 
-    public function scoutMetadata(): array{
+    public function scoutMetadata(): array
+    {
         return [];
     }
 
-   /* public function toSearchableArray()
+    public function getScoutKey()
     {
-        return ['id'=>1, 'title'=>'Some text'];
-    }*/
+        return $this->getKey();
+    }
+
+    public function getKey()
+    {
+        return $this->attributesToArray()["id"];
+    }
+
+    public function toSearchableArray()
+    {
+        //return ['id' => 1, 'title' => 'Some text'];
+        return array_merge($this->attributesToArray(), $this->relationsToArray());
+    }
 }

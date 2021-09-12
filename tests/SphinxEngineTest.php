@@ -10,7 +10,6 @@ use Foolz\SphinxQL\SphinxQL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Scout\Builder;
-use Laravel\Scout\Searchable;
 
 use Mockery as m;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
@@ -20,7 +19,7 @@ use stdClass;
 class SphinxEngineTest extends MockeryTestCase{
 
     /**
-     * @var Model|Searchable
+     * @var Model
      */
     private $model;
 
@@ -81,7 +80,7 @@ class SphinxEngineTest extends MockeryTestCase{
     {
         $qry = 'search query';
         $client = m::mock(SphinxQL::class);
-        $client->shouldReceive('select')->once()->with('*')
+        $client->shouldReceive('select')->once()
             ->andReturn($thisObject = m::mock(SphinxQL::class));
 
         $thisObject->shouldReceive('from')->once()
@@ -90,16 +89,26 @@ class SphinxEngineTest extends MockeryTestCase{
 
         $expression = SphinxQL::expr('"' . $qry . '"/1');
         $thisObject->shouldReceive('match')->once()
-            ->with(array_keys($this->model->toSearchableArray()), m::on(static function ($arg) use ($expression) {
-                return $expression === $arg;
-            }))
+            ->withArgs(
+                function ($arg) {
+                    return $arg == '*';
+                },
+                function ($arg) use ($expression) {
+                    return $expression->value() === $arg->value();
+                })
             ->andReturn($thisObject = m::mock(SphinxQL::class));
 
-        $thisObject->shouldReceive('execute')->once();
+        $thisObject->shouldReceive('limit')->once()
+            ->withAnyArgs()
+            ->andReturn($thisObject = m::mock(SphinxQL::class));
 
         $thisObject->shouldReceive('where')->once()
-            ->with('foo', '=', 1)
-            ->andReturn($thisObject = m::mock(SphinxQL::class));
+            ->with('foo', '=', 1);
+
+        $thisObject->shouldReceive('orderBy')->once()
+            ->withAnyArgs();
+
+        $thisObject->shouldReceive('execute')->once();
 
         $engine = new SphinxEngine($client);
         $builder = new Builder($this->model, $qry);
