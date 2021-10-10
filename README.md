@@ -5,25 +5,35 @@
 [![Software License][ico-license]](LICENSE)
 
 ## Introduction
-This package offers advanced functionality for searching and filtering data using [Sphinx search engine](http://sphinxsearch.com/) for Laravel Scout.
+This package offers advanced functionality for searching and filtering data using the [Sphinx full text search server](http://sphinxsearch.com/) for [Laravel Scout](https://laravel.com/docs/master/scout).
 
 ## Installation
+
 ### Composer
-Use the following command to install package via composer
+
+Use the following command to install this package via Composer.
+
 ```bash
 composer require constantable/laravel-scout-sphinx
 ```
+
 ### Configuration
+
 Publish the Scout configuration using the `vendor:publish` Artisan command. 
+
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
-This command will publish the scout.php configuration file to your config directory. 
-Edit this file to set 'sphinxsearch' as a Scout driver:
+
+This command will publish the `scout.php` configuration file to your config directory, which you can than edit and set `sphinxsearch` as the Scout driver.
+
 ```php
 'driver' => env('SCOUT_DRIVER', 'sphinxsearch'),
 ```
-And add default Sphinx connection options
+
+
+To configure the connection to Sphinx server add the following (i.e. default) connection options.
+
 ```php
     'sphinxsearch' => [
         'host' => env('SPHINX_HOST', 'localhost'),
@@ -32,12 +42,16 @@ And add default Sphinx connection options
         'charset' => env('SPHINX_CHARSET'),
     ],
 ```
-Override these variables in your .env file if need
+
+Override these variables in your `.env` file if required.
 
 ## Usage
+
 - Add the `Laravel\Scout\Searchable` trait to the model you would like to make searchable. 
-- Customize index name and searchable data for the model:
+- Customize the index name and searchable data for the model:
+
 ```php
+
     public function searchableAs()
     {
         return 'posts_index';
@@ -53,22 +67,24 @@ Override these variables in your .env file if need
     }
 ```
 
-The basic search:
+A basic search:
+
 ```php 
 $orders = App\Order::search('Star Trek')->get();
 ``` 
 
-Please refer to the [Scout documentation](https://laravel.com/docs/master/scout#searching) for additional information.
-You can run more complex queries on index using callback, set the where clause, orderBy or paginate, for example:
+Please refer to the [Scout documentation](https://laravel.com/docs/master/scout#searching) for additional information. You can run more complex queries on the index by using a callback, setting the `where` clause, `orderBy`, or `paginate` threshold. For example:
+
 ```php
-$oorders = App\Order::search($keyword, function (SphinxQL $query) {
+$orders = App\Order::search($keyword, function (SphinxQL $query) {
         return $query->groupBy('description');
     })            
     ->where('status', 1)
     ->orderBy('date', 'DESC')
     ->paginate(20);
 ``` 
-> Note: Changes on Sphinx indexes are only allowed for RT (Real Time) indexes. If you have ones and you need to update/delete records please define `public $isRT = true;` model's property. 
+
+Note: Changes on Sphinx indexes are only allowed for RT (Real-time) indexes. If you have these and need to update/delete records please define `public $isRT = true;` in the model's property. 
 
 ## Credits
 - [Hyn](https://github.com/hyn)
