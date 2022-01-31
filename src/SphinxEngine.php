@@ -227,7 +227,7 @@ class SphinxEngine extends AbstractEngine
         $query = $this->sphinx
             ->select('*', SphinxQL::expr('WEIGHT() AS weight'))
             ->from($index)
-            ->match('*', SphinxQL::expr('"' . $builder->query . '"/1'))
+            ->match('*', SphinxQL::expr($builder->query))
             ->limit($builder->limit ?? 20);
 
         foreach ($builder->wheres as $clause => $filters) {
