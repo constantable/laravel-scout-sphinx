@@ -161,7 +161,6 @@ class SphinxEngine extends AbstractEngine
                 $totalCount = $value["Value"];
             }
         }
-
         return $totalCount;
     }
 
@@ -190,7 +189,6 @@ class SphinxEngine extends AbstractEngine
         /**
          * @var Searchable $model
          */
-
         $model = $builder->model;
         $index = $model->searchableAs();
         $ranker = config()->get('app.sphinx_ranker');
