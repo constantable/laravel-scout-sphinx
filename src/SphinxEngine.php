@@ -161,6 +161,7 @@ class SphinxEngine extends AbstractEngine
                 $totalCount = $value["Value"];
             }
         }
+
         return $totalCount;
     }
 
