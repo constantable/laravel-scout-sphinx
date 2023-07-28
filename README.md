@@ -33,6 +33,13 @@ And add default Sphinx connection options
         'charset' => env('SPHINX_CHARSET'),
     ],
 ```
+
+If needed to add any ranker options.
+```
+Add `sphinx_ranker =  ranker` in your config.app file.
+For details on ranker, you can visit `http://sphinxsearch.com/docs/archives/2.1.1/weighting.html`
+```
+
 Override these variables in your .env file if need
 
 ## Usage

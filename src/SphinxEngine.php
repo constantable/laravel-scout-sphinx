@@ -161,7 +161,7 @@ class SphinxEngine extends AbstractEngine
                 $totalCount = $value["Value"];
             }
         }
-        
+
         return $totalCount;
     }
 
@@ -192,12 +192,18 @@ class SphinxEngine extends AbstractEngine
          */
         $model = $builder->model;
         $index = $model->searchableAs();
+        $ranker = config()->get('app.sphinx_ranker');
 
         $query = $this->sphinx
             ->select('*', SphinxQL::expr('WEIGHT() AS weight'))
             ->from($index)
-            ->match('*', SphinxQL::expr('"' . str_replace('"', '\"', $builder->query) . '"/1.0'))
-            ->limit($builder->limit??20);
+            ->match('*', SphinxQL::expr('"' . str_replace('"', '\"', $builder->query) . '"/1.0'));
+
+        if (!empty($ranker)) {
+            $query->option('ranker', $ranker);
+        }
+
+        $query->limit($builder->limit ?? 20);
 
         foreach ($builder->wheres as $clause => $filters) {
             $query->where($clause, '=', $filters);
