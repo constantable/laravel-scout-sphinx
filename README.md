@@ -11,7 +11,7 @@ package offers advanced functionality for searching and filtering data using the
 Use the following command to install this package via Composer.
 
 ```bash
-composer require eliasj/laravel-scout-sphinx
+composer require constantable/laravel-scout-sphinx
 ```
 
 ### Configuration
