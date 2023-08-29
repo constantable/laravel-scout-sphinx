@@ -1,5 +1,5 @@
 {
-    "name": "eljump/laravel-scout-sphinx",
+    "name": "constantable/laravel-scout-sphinx",
     "description": "Laravel Scout Sphinx Driver",
     "license": "MIT",
     "minimum-stability": "dev",
