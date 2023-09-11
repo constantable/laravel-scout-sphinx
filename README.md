@@ -1,11 +1,8 @@
 # Laravel Scout Sphinx Driver
 
-[![Build Status](https://app.travis-ci.com/constantable/laravel-scout-sphinx.svg?branch=master)](https://app.travis-ci.com/constantable/laravel-scout-sphinx)
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE)
-
 ## Introduction
-This package offers advanced functionality for searching and filtering data using the [Sphinx full text search server](http://sphinxsearch.com/) for [Laravel Scout](https://laravel.com/docs/master/scout).
+This package is fork of constantable/laravel-scout-sphinx.
+package offers advanced functionality for searching and filtering data using the [Sphinx full text search server](http://sphinxsearch.com/) for [Laravel Scout](https://laravel.com/docs/master/scout).
 
 ## Installation
 
