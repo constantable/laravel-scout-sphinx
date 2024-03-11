@@ -2,10 +2,12 @@
 
 namespace Constantable\SphinxScout;
 
+use Exception;
 use Foolz\SphinxQL\Helper;
 use Foolz\SphinxQL\SphinxQL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine as AbstractEngine;
 use Laravel\Scout\Searchable;
@@ -135,6 +137,33 @@ class SphinxEngine extends AbstractEngine
     }
 
     /**
+     * Map the given results to instances of the given model via a lazy collection.
+     *
+     * @param Builder $builder
+     * @param mixed $results
+     * @param Model|Searchable $model
+     * @return LazyCollection
+     */
+    public function lazyMap(Builder $builder, $results, $model)
+    {
+        if ($results->count() === 0) {
+            return LazyCollection::make($model->newCollection());
+        }
+
+        $objectIds = collect($results->fetchAllAssoc())->pluck('id')->values()->all();
+
+        $objectIdPositions = array_flip($objectIds);
+
+        return $model->queryScoutModelsByIds(
+            $builder, $objectIds
+        )->cursor()->filter(function (/** @var Searchable $model */ $model) use ($objectIds) {
+            return in_array($model->getScoutKey(), $objectIds, false);
+        })->sortBy(function (/** @var Searchable $model */ $model) use ($objectIdPositions) {
+            return $objectIdPositions[$model->getScoutKey()];
+        })->values();
+    }
+
+    /**
      * Pluck and return the primary keys of the given results.
      *
      * @param mixed $results
@@ -238,5 +267,23 @@ class SphinxEngine extends AbstractEngine
     public function addWhereIn(string $attribute, array $arrayIn)
     {
         $this->whereIns[] = array($attribute => $arrayIn);
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function createIndex($name, array $options = [])
+    {
+        throw new Exception('Sphinx indexes must be defined in sphinx.conf.');
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function deleteIndex($name)
+    {
+        throw new Exception('Sphinx indexes must be removed from sphinx.conf.');
     }
 }
